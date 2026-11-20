@@ -1,0 +1,10 @@
+{
+  "date": "2026-01-01",
+  "what_happened": "The spec said a field was never counted anywhere. It was counted, inside a lookup table the author did not search. The executor built a second counter beside the working one.",
+  "rule_broken": "Every factual claim about the code carries the command that proved it",
+  "layer": "process",
+  "category": "spec-wrong",
+  "would_have_caught_it": "A check that refuses a spec whose factual claims have no command and output beside them",
+  "current_rung": 1,
+  "reference": "ABC-123"
+}

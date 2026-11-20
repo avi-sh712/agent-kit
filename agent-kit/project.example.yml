@@ -1,0 +1,67 @@
+# project.yml — the ONE file you edit when dropping this kit into a new repo.
+#
+# Everything else in agent-kit/ is project-neutral and ships unchanged.
+# Any value left as null makes the agents STOP and say which value is missing,
+# rather than run a wrong command and report success.
+
+project:
+  name: null                  # e.g. "Acme Analytics" — used in agent greetings only
+  # Plain-language description of what this codebase is. The architect reads it
+  # before planning. One or two sentences.
+  what_it_is: null
+
+tracker:
+  # The single source of truth for who is working on what.
+  type: null                  # jira | github | linear | none
+  site: null                  # e.g. yourteam.atlassian.net
+  cloud_id: null              # Jira cloudId (Atlassian MCP needs it)
+  project_key: null           # e.g. ABC — tickets look like ABC-123
+  ticket_pattern: null        # regex a commit message must match, e.g. '\bABC-\d+\b'
+  # Workflow state ids. Names differ per tracker; the agents only use these five.
+  transitions:
+    todo: null
+    in_progress: null
+    in_review: null
+    done: null
+
+branches:
+  main: main                  # the branch that deploys
+  integration: null           # optional: batch branch for small fixes; null = PR straight to main
+  protected: true             # true = agents must never push to `main` directly
+  # Branch name patterns the agents create.
+  feature_prefix: "feature/"
+  fix_prefix: "fix/"
+
+commands:
+  # Every command the agents are allowed to claim they ran.
+  # {area} is substituted with the path the agent touched.
+  # A null command means "this check does not exist here" — the agent reports
+  # NOT RUN with that reason instead of inventing a substitute.
+  test_targeted: null         # python: "pytest {area} -q"   go: "go test ./{area}/..."
+  test_full: null             # the whole suite, if this machine can run it
+  lint: null                  # e.g. "ruff check ." / "golangci-lint run" / "eslint ."
+  typecheck: null             # e.g. "mypy ." / "tsc -p tsconfig.app.json --noEmit"
+  build: null                 # MUST be the same command the pipeline runs
+  dev_server: null            # how a human opens the app locally
+  health: null                # e.g. "curl -sf https://api.example.com/health"
+
+docs:
+  # Files the architect reads at session start. Missing file = the agent says so.
+  spec: null                  # e.g. prd.md
+  status: null                # e.g. STATUS.md
+  architecture: null          # e.g. docs/02-architecture.md
+  decisions: null             # e.g. docs/09-decisions.md
+
+limits:
+  max_file_lines: 300         # a touched file over this that GREW fails the check
+  max_files_per_dir: 40       # flat-directory warning threshold
+  # Paths exempt from max_file_lines (globs). Keep this list short and justified.
+  file_size_exempt: []
+
+quality:
+  # Where the self-learning loop keeps its records.
+  defects_dir: ".claude/agent-kit/defects"
+  metrics_file: "docs/quality/metrics.md"
+  # A defect category seen this many times in 30 days gets its control promoted
+  # one rung (note -> checklist -> script -> setting).
+  promote_after: 3

@@ -1,0 +1,8 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# A filled-in project.yml belongs to the repository you install the kit into,
+# never to this one. Only project.example.yml is tracked here.
+agent-kit/project.yml
