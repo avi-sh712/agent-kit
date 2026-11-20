@@ -43,7 +43,7 @@ Two findings shaped everything in this repository:
 
 ## What you get
 
-Everything lives in the `agent-kit/` folder.
+The kit lives in the `agent-kit/` folder.
 
 | Piece | What it is |
 |---|---|
@@ -58,6 +58,15 @@ Everything lives in the `agent-kit/` folder.
 
 The checks are plain Python and git. They read commits, so they work the same
 whether a person or an agent wrote the change.
+
+Also in this repository:
+
+| Piece | What it is |
+|---|---|
+| `requirements.txt` | The one package the checks need: PyYAML. |
+| `requirements-dev.txt` | That, plus pytest for the tests. |
+| [`TOOLS.md`](TOOLS.md) | How to set up Serena and graphify, two code-search tools, next to the kit. |
+| `tools/codemap/` | An early library that will map where data is read and written. Storage layer only, with no command to run yet. |
 
 ## See it catch something
 
@@ -93,11 +102,12 @@ The other three checks, each from its own run in the same trial:
 
 ## Install
 
-You need Python 3.10 or newer, git, and PyYAML (`pip install pyyaml`).
+You need Python 3.10 or newer, git, and one package, PyYAML.
 
 ```bash
-# 1. Get the kit, next to your repository
+# 1. Get the kit, next to your repository, and install PyYAML
 git clone https://github.com/reachmachine/agent-kit.git
+python3 -m pip install -r agent-kit/requirements.txt
 
 # 2. From the root of your repository
 cd your-repo
@@ -108,6 +118,15 @@ cp .claude/agent-kit/project.example.yml .claude/agent-kit/project.yml
 
 # 3. Check the install
 python3 .claude/agent-kit/checks/run_all.py --list
+```
+
+If pip stops with an `externally-managed-environment` error, as the system
+Python on recent Debian and Ubuntu does, make a virtual environment first and
+run the commands on this page inside it:
+
+```bash
+python3 -m venv .venv
+. .venv/bin/activate
 ```
 
 Step 2 overwrites any file named `architect.md`, `executor.md`, `reviewer.md`
@@ -226,16 +245,25 @@ proposed for deletion, so the rulebook shrinks as well as grows.
   ships no code that talks to a tracker or starts an agent. The checks only
   match `ticket_pattern` against commit messages.
 - **Tested on Linux only.** The tests run in CI on Python 3.10 to 3.13.
+- **Serena and graphify are not wired in.** The role files and the charter do
+  not mention either tool. [TOOLS.md](TOOLS.md) shows the setup we ran and
+  what we did not test.
+- **`tools/codemap/` is not usable yet.** It is a library and its tests, with
+  no command to run.
 
-## Run the kit's own tests
+## Run the tests
+
+From the root of this repository:
 
 ```bash
-python3 -m pip install pyyaml pytest
-cd agent-kit/checks
-python3 -m pytest tests/ -q
+python3 -m pip install -r requirements-dev.txt
+(cd agent-kit/checks && python3 -m pytest tests/ -q)
+(cd tools/codemap && python3 -m pytest -q)
 ```
 
-36 tests. Each one builds its case by hand, so the suite needs no network.
+36 kit tests and 49 codemap tests. Each kit test builds its case by hand, so
+that suite needs no network. The codemap tests run `git`, `bash` and `tar` in
+temp folders.
 
 ## Contributing
 

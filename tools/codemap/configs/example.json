@@ -1,0 +1,32 @@
+{
+  "repo_id": "example",
+  "roots": ["src", "scripts"],
+  "exclude": [],
+  "name_filter": {"min_len": 4, "stoplist": ["main", "app", "get", "run", "index", "api", "types", "utils", "config"]},
+  "kinds": {
+    "mcp_tool_decorators": ["server.tool"],
+    "task_decorators": ["worker.task"],
+    "export_path_words": ["export"],
+    "export_calls": ["csv.writer"],
+    "cache_words": ["cache"],
+    "pool_prefixes": ["shared_"],
+    "skill_md_glob": "skills/**/*.md"
+  },
+  "query_key_companions": [],
+  "concept_queries": [],
+  "embedder": {
+    "url": "http://127.0.0.1:8000",
+    "key_header": "X-Embedder-Key",
+    "key_env": "EMBEDDER_KEY",
+    "max_texts": 64,
+    "max_chars": 8000,
+    "batch": 8,
+    "model_revision": "replace-with-your-model-revision",
+    "probe_text": "codemap index fingerprint probe v1"
+  },
+  "prices": {"file": "path/to/prices.py", "variable": "MODEL_PRICES"},
+  "api_key_env": "MODEL_API_KEY",
+  "default_model": "replace-with-your-model",
+  "cache_root": "~/.cache/codemap",
+  "ledger_root": "~/.local/state/codemap/example"
+}

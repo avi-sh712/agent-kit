@@ -5,13 +5,16 @@ every part of it keeps earning its place.
 
 ## Run the tests
 
+From the root of this repository:
+
 ```
-python3 -m pip install pyyaml pytest
-cd agent-kit/checks
-python3 -m pytest tests/ -q
+python3 -m pip install -r requirements-dev.txt
+(cd agent-kit/checks && python3 -m pytest tests/ -q)
+(cd tools/codemap && python3 -m pytest -q)
 ```
 
-Each test builds its case by hand, so the suite needs no network and no setup.
+Each kit test builds its case by hand, so that suite needs no network and no
+setup. The codemap tests run `git`, `bash` and `tar` in temp folders.
 
 ## The one rule for a new check
 
