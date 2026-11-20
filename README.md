@@ -129,6 +129,9 @@ python3 -m venv .venv
 . .venv/bin/activate
 ```
 
+If `python3 -m venv` fails too, its error message names the system package
+that is missing. On our test box that was `python3-venv`.
+
 Step 2 overwrites any file named `architect.md`, `executor.md`, `reviewer.md`
 or `retro.md` that is already in `.claude/agents/`. Move yours aside first.
 
